@@ -15,8 +15,8 @@ QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly for
 name s
 age i
 address
-	street s
-	city s
+	street s = 123 Main St.
+	city s = Mountain View
  ```
  * Simple arrays can be designated on one line, with comma delimited values, or combined throughout the document:
  ```
