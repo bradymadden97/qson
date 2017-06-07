@@ -1,0 +1,26 @@
+product
+	name = QSON
+	description = The simple-syntax JSON generator
+repository = https://github.com/bradymadden97/qson
+version f = 0.1
+releaseDate = 2017-06-06
+demo b = true
+person
+	id i = 12345
+	name = John Doe
+	education
+		school = University of Virginia
+		major = Computer Science
+	emergencyContacts[0]
+		name s = Bob Smith
+		phone s = 202-345-6789
+		relationship = cousin
+	emergencyContacts[1]
+		name s = Jane Doe
+		email s = jane.doe@email.com
+		relationship = mother
+company = Google
+latitude = 37.3861 N
+longitude = 122.0839 W
+person
+	email[] = john@email.com, doe@google.com

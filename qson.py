@@ -3,14 +3,21 @@ import re
 import sys
 import json
 
-parentList = []
-headDict = {}
-infile = sys.argv[1]
-outfile = sys.argv[2]
+infile, outfile = "", ""
+demo = False
+for each in sys.argv:
+    if each == "-d":
+        demo = True
+
+if len(sys.argv) != 3 and not demo:
+    print("Please enter input and output filenames, or -d for demo")
+elif not demo:
+    infile = sys.argv[1]
+    outfile = sys.argv[2]
 
 
-def from_file():
-    with open(infile, 'r') as file:
+def from_file(inf):
+    with open(inf, 'r') as file:
         for line in file:
             parse_line(line.rstrip('\n').split('\t'))
 
@@ -119,14 +126,25 @@ def add_simp_array(curD, key, dType, val):
         curD[key].append(val)
 
 
-def to_file():
-    with open(outfile, 'w') as file:
+def to_file(outf):
+    with open(outf, 'w') as file:
         json.dump(headDict, file, indent=5, sort_keys=True)
 
 
 def main():
-    from_file()
-    to_file()
+    from_file(infile)
+    to_file(outfile)
 
 
-main()
+def demo():
+    from_file('demo/demo.txt')
+    to_file('demo/demo.json')
+
+
+parentList = []
+headDict = {}
+
+if demo:
+    demo()
+else:
+    main()

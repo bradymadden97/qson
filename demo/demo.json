@@ -1,0 +1,35 @@
+{
+     "company": "Google",
+     "demo": true,
+     "latitude": "37.3861 N",
+     "longitude": "122.0839 W",
+     "person": {
+          "education": {
+               "major": "Computer Science",
+               "school": "University of Virginia"
+          },
+          "email": [
+               "john@email.com",
+               "doe@google.com"
+          ],
+          "emergencyContacts[0]": {
+               "name": "Bob Smith",
+               "phone": "202-345-6789",
+               "relationship": "cousin"
+          },
+          "emergencyContacts[1]": {
+               "email": "jane.doe@email.com",
+               "name": "Jane Doe",
+               "relationship": "mother"
+          },
+          "id": 12345,
+          "name": "John Doe"
+     },
+     "product": {
+          "description": "The simple-syntax JSON generator",
+          "name": "QSON"
+     },
+     "releaseDate": "2017-06-06",
+     "repository": "https://github.com/bradymadden97/qson",
+     "version": 0.1
+}
