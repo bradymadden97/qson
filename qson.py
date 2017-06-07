@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#__author__bradymadden97__
+
 import re
 import sys
 import json
