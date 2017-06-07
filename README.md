@@ -42,7 +42,7 @@ address
 **QSON** v0.1 is a Python 3 script.
 1. Get [python](https://www.python.org/downloads/)
 2. Clone this repository to your machine
-3. Run **QSON** in the command line:
+3. Run **QSON** with the proper arguments:
 `` $ python qson.py <inputfile.txt> <outputfile.json> ``
 
 ## Demo
