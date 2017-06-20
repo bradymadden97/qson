@@ -1,5 +1,5 @@
 # QSON
-QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly formulate complex data in a ubiquitous structure using simple syntax. Write your data quickly without the need for even the shift key and quickly translate it to JSON format.
+QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly formulate complex data in a ubiquitous structure using simple syntax. Write your data quickly and translate it to JSON format.
 
 **Version 0.1** is a command-line python script that can read in a text file and return a pretty-printed JSON file.
 ## JSON Generator Syntax
@@ -12,11 +12,22 @@ QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly for
   * ` [] ` for an array
 * Nested data is indicated by tabbing-in from the parent on a new line. For example:
 ```
-name s
-age i
+name s = Brady Madden
+age i = 20
 address
 	street s = 123 Main St.
 	city s = Mountain View
+ ```
+ will generate:
+ ```
+{  
+     "name":"Brady Madden",
+     "age":20,
+     "address":{  
+          "street":"123 Main St.",
+          "city":"Mountain View"
+     }
+}
  ```
  * Simple arrays can be designated on one line, with comma delimited values, or combined throughout the document:
  ```
@@ -25,7 +36,7 @@ address
  grade i = 12
  courses[] = english
  ```
-  This will generate:
+  to generate:
 ```
 {
      "courses": [
