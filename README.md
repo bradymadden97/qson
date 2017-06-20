@@ -21,11 +21,11 @@ address
  will generate:
  ```
 {  
-     "name":"Brady Madden",
-     "age":20,
-     "address":{  
-          "street":"123 Main St.",
-          "city":"Mountain View"
+     "name": "Brady Madden",
+     "age": 20,
+     "address": {  
+          "street": "123 Main St.",
+          "city": "Mountain View"
      }
 }
  ```
