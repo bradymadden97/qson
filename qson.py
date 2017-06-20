@@ -6,14 +6,14 @@ import sys
 import json
 
 infile, outfile = "", ""
-demo = False
+demo_flag = False
 for each in sys.argv:
     if each == "-d":
-        demo = True
+        demo_flag = True
 
-if len(sys.argv) != 3 and not demo:
-    print("Please enter input and output filenames, or -d for demo")
-elif not demo:
+if len(sys.argv) != 3 and not demo_flag:
+    raise RuntimeError("Please enter input and output filenames, or -d for demo")
+elif not demo_flag:
     infile = sys.argv[1]
     outfile = sys.argv[2]
 
@@ -21,10 +21,12 @@ elif not demo:
 def from_file(inf):
     with open(inf, 'r') as file:
         for line in file:
-            parse_line(line.rstrip('\n').split('\t'))
+            parse_line(line.rstrip('\n').rstrip().replace("    ", "\t").split("\t"))
 
 
 def parse_line(l):
+    if handle_empty(l):
+        return
     currentDict = headDict
     idx = 0
     while idx < len(l):
@@ -35,7 +37,19 @@ def parse_line(l):
                 currentDict = currentDict.get(parentList[idx][0])[parentList[idx][1]]
             else:
                 currentDict = currentDict.get(parentList[idx])
+                handle_invalid(currentDict, parentList[idx])
         idx += 1
+
+
+def handle_empty(entry):
+    return len(entry) == 1 and entry[0] == ""
+
+
+def handle_invalid(current_dict, last):
+    if current_dict is None:
+        errstr = str("Syntax error. '" + last + "' cannot have both a value and children nodes.")
+        raise SyntaxError(errstr)
+
 
 
 def add_data(currentDict, idx, l):
@@ -146,7 +160,8 @@ def demo():
 parentList = []
 headDict = {}
 
-if demo:
+
+if demo_flag:
     demo()
 else:
     main()
