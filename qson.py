@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-#__author__bradymadden97__
+# __author__bradymadden97__
 
 import re
 import sys
 import json
+import warnings
 
 infile, outfile = "", ""
 demo_flag = False
@@ -27,17 +28,17 @@ def from_file(inf):
 def parse_line(l):
     if handle_empty(l):
         return
-    currentDict = headDict
+    current_dict = headDict
     idx = 0
     while idx < len(l):
         if l[idx] != "":
-            add_data(currentDict, idx, l)
+            add_data(current_dict, idx, l)
         else:
-            if type(currentDict.get(parentList[idx])) is list:
-                currentDict = currentDict.get(parentList[idx][0])[parentList[idx][1]]
+            if type(current_dict.get(parentList[idx])) is list:
+                current_dict = current_dict.get(parentList[idx][0])[parentList[idx][1]]
             else:
-                currentDict = currentDict.get(parentList[idx])
-                handle_invalid(currentDict, parentList[idx])
+                current_dict = current_dict.get(parentList[idx])
+                handle_invalid(current_dict, parentList[idx])
         idx += 1
 
 
@@ -51,95 +52,126 @@ def handle_invalid(current_dict, last):
         raise SyntaxError(errstr)
 
 
-
-def add_data(currentDict, idx, l):
-    if is_array(l[idx]):
-        array_data_piece(currentDict, l[idx], idx)
+def add_data(current_dict, idx, l):
+    current_key = l[idx]
+    if is_array(current_key):
+        array_data_piece(current_dict, current_key, idx)
     else:
-        if l[idx].strip() not in currentDict:
-            single_data_piece(currentDict, l[idx].strip())
-        append_parent_list(idx, l[idx])
+        if current_key.strip() not in current_dict:
+            current_key = single_data_piece(current_dict, current_key.strip())
+        append_parent_list(idx, current_key)
 
 
 def is_array(data):
     return re.match('.*\[\].*', data)
 
 
-def append_parent_list(idx, keyName):
+def append_parent_list(idx, key_name):
     if len(parentList) > idx:
-        parentList[idx] = keyName
+        parentList[idx] = key_name
     else:
-        parentList.append(keyName)
+        parentList.append(key_name)
 
 
-def single_data_piece(currentDict, data):
+def single_data_piece(current_dict, data):
     if re.match('.*=.*', data):
         splt = re.match('^([^ ]*) *([^ ]*) *= *(.+)$', data)
-        keyName = splt.group(1).strip()
-        dataType = splt.group(2).strip()
+        key = splt.group(1).strip()
+        data_type = splt.group(2).strip()
         value = splt.group(3).strip()
-        addKV(currentDict, keyName, dataType, value)
+        return add_key_val(current_dict, key, data_type, value)
     else:
-        currentDict[data] = {}
+        new_key = validate_key(data)
+        current_dict[new_key] = {}
+        return new_key
 
 
-def array_data_piece(currentDict, data, idx):
+def array_data_piece(current_dict, data, idx):
     if re.match('.*=.*', data):
         splt = re.match('^([^ \[\]]*) *([\[\]]*) *([^ ]*) *= *(.+)$', data)
-        keyName = splt.group(1).strip()
-        dataType = splt.group(3).strip()
+        key = splt.group(1).strip()
+        data_type = splt.group(3).strip()
         value = splt.group(4).strip()
-        if keyName not in currentDict:
-            currentDict[keyName] = []
-        aList = value.split(",")
-        for item in aList:
-            add_simp_array(currentDict, keyName, dataType, item.strip())
-        append_parent_list(idx, keyName)
+        new_key = validate_key(key)
+        if new_key not in current_dict:
+            current_dict[new_key] = []
+        a_list = value.split(",")
+        for item in a_list:
+            add_simp_array(current_dict, new_key, data_type, item.strip())
+        append_parent_list(idx, new_key)
     else:
         splt = re.match('^([^ \[\]]*) *\[[ ]*[0-9]*[ ]*\]', data)
-        keyName = splt.group(1).strip()
+        key = splt.group(1).strip()
         index = splt.group(2).strip()
-        if keyName in currentDict:
-            while len(currentDict[keyName]) <= index:
-                currentDict[keyName].append({})
+        new_key = validate_key(key)
+        if new_key in current_dict:
+            while len(current_dict[new_key]) <= index:
+                current_dict[new_key].append({})
         else:
-            currentDict[keyName] = [0]
-            currentDict[keyName][0] = {}
-        append_parent_list(idx, [keyName, index])
+            current_dict[new_key] = [0]
+            current_dict[new_key][0] = {}
+        append_parent_list(idx, [new_key, index])
 
 
-def addKV(curD, key, dType, val):
-    if dType == 'b':
-        curD[key] = (val == 'True' or val == 'true')
-    elif dType == 'i':
+def add_key_val(cur_dict, k, data_type, val):
+    key = validate_key(k)
+    if data_type == 'b':
+        cur_dict[key] = (val == 'True' or val == 'true')
+    elif data_type == 'i':
         try:
-            curD[key] = int(val)
+            cur_dict[key] = int(val)
         except ValueError:
-            curD[key] = val
-    elif dType == 'f':
+            cur_dict[key] = val
+    elif data_type == 'f':
         try:
-            curD[key] = float(val)
+            cur_dict[key] = float(val)
         except ValueError:
-            curD[key] = val
+            cur_dict[key] = val
     else:
-        curD[key] = val
+        invalid_data_type(key, data_type)
+        cur_dict[key] = val
+    return key
 
 
-def add_simp_array(curD, key, dType, val):
-    if dType == 'b':
-        curD[key].append((val == 'True' or val == 'true'))
-    elif dType == 'i':
+def validate_key(key):
+    new_key = re.match('^[^ \t\n]*', key).group(0)
+    if new_key != key:
+        errmsg = str("Key '" + key + "' cannot have spaces. Adjusted to '" + new_key + "'")
+        warnings.warn(errmsg, SyntaxWarning)
+    if new_key[0].isupper():
+        newer_key = str(new_key[0].lower() + new_key[1:])
+        errmsg = str("Key '" + new_key + "' cannot begin with uppercase. Adjusted to '" + newer_key + "'")
+        warnings.warn(errmsg, SyntaxWarning)
+        return newer_key
+    return new_key
+
+
+def add_simp_array(cur_dict, key, data_type, val):
+    if data_type == 'b':
+        cur_dict[key].append((val == 'True' or val == 'true'))
+    elif data_type == 'i':
         try:
-            curD[key].append(int(val))
+            cur_dict[key].append(int(val))
         except ValueError:
-            curD[key].append(val)
-    elif dType == 'f':
+            cur_dict[key].append(val)
+    elif data_type == 'f':
         try:
-            curD[key].append(float(val))
+            cur_dict[key].append(float(val))
         except ValueError:
-            curD[key].append(val)
+            cur_dict[key].append(val)
     else:
-        curD[key].append(val)
+        invalid_data_type(key, data_type)
+        cur_dict[key].append(val)
+
+
+def invalid_data_type(key, dt):
+    if dt != "":
+        errmsg = ""
+        if len(dt) > 1:
+            errmsg = str("Key '" + key + "' cannot have spaces. '" + dt + "' is also not a valid data type.")
+        else:
+            errmsg = str("Data type '" + dt + "' is not a valid data type for key '" + key + "'")
+        warnings.warn(errmsg, SyntaxWarning)
 
 
 def to_file(outf):
