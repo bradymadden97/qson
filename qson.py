@@ -26,7 +26,6 @@ def from_file(inf):
 
 
 def parse_line(l):
-    print(l)
     if handle_empty(l):
         return
     current_dict = headDict
@@ -36,10 +35,7 @@ def parse_line(l):
             add_data(current_dict, idx, l)
         else:
             if type(current_dict.get(parentList[idx].name)) is list:
-                if parentList[idx].index is not None:
-                    print(parentList[idx].name)
-                    print(parentList[idx].index)
-                    current_dict = current_dict.get(parentList[idx].name)[parentList[idx].index]
+                current_dict = current_dict.get(parentList[idx].name)[parentList[idx].index]
             else:
                 current_dict = current_dict.get(parentList[idx].name)
                 handle_invalid(current_dict, parentList[idx].name)
@@ -112,17 +108,11 @@ def array_data_piece(current_dict, data, idx):
             add_simp_array(current_dict, new_key, data_type, item.strip())
         append_parent_list(idx, new_key, None)
     else:
-        splt = re.match('^([^ \[\]]*) *\[[ ]*[0-9]*[ ]*\]', data)
-        key = splt.group(1).strip()
-        index = splt.group(2).strip()
-        new_key = validate_key(key)
-        if new_key in current_dict:
-            while len(current_dict[new_key]) <= index:
-                current_dict[new_key].append({})
-        else:
-            current_dict[new_key] = [0]
-            current_dict[new_key][0] = {}
-        append_parent_list(idx, [new_key, index])
+        splt = re.match('^([^ \[\]]*)', data)
+        key = validate_key(splt.group(1).strip())
+        if key not in current_dict:
+            current_dict[key] = []
+        append_parent_list(idx, key, None)
 
 
 def object_array_data_piece(current_dict, data, idx):
