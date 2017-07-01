@@ -19,6 +19,20 @@ elif not demo_flag:
     outfile = sys.argv[2]
 
 
+class ParentListNode(object):
+    name = ""
+    index = None
+
+    def __init__(self, name, index):
+        self.name = name
+        self.index = index
+
+
+def create_parent_list_node(name, index):
+    pln = ParentListNode(name, index)
+    return pln
+
+
 def from_file(inf):
     with open(inf, 'r') as file:
         for line in file:
@@ -108,25 +122,32 @@ def array_data_piece(current_dict, data, idx):
             add_simp_array(current_dict, new_key, data_type, item.strip())
         append_parent_list(idx, new_key, None)
     else:
-        splt = re.match('^([^ \[\]]*)', data)
-        key = validate_key(splt.group(1).strip())
-        if key not in current_dict:
-            current_dict[key] = []
-        append_parent_list(idx, key, None)
+        current_key, index = object_array_data_piece(current_dict, data, idx)
+        append_parent_list(idx, current_key, index)
 
 
 def object_array_data_piece(current_dict, data, idx):
-    splt = re.match('^([^ \[\]]*) *\[[ ]*([0-9]+)[ ]*\]', data)
-    key = splt.group(1).strip()
-    index = int(splt.group(2).strip())
-    new_key = validate_key(key)
-    if new_key in current_dict:
-        if len(current_dict[new_key]) <= index:
-            add_object_array_index(current_dict[new_key], len(current_dict[new_key]), index)
+    splt = re.match('^([^ \[\]]*) *\[[ ]*([0-9]*)[ ]*\]', data)
+    key = validate_key(splt.group(1).strip())
+    if splt.group(2) == "":
+        object_array_parse_data(key, current_dict, None)
+        return key, len(current_dict[key])-1
     else:
-        current_dict[new_key] = []
-        add_object_array_index(current_dict[new_key], 0, index)
-    return new_key, index
+        index = int(splt.group(2))
+        object_array_parse_data(key, current_dict, index)
+        return key, index
+
+
+def object_array_parse_data(key, current_dict, index):
+    if key in current_dict:
+        if index is None:
+            index = len(current_dict[key])
+        add_object_array_index(current_dict[key], len(current_dict[key]), index)
+    else:
+        current_dict[key] = []
+        if index is None:
+            index = 0
+        add_object_array_index(current_dict[key], 0, index)
 
 
 def add_object_array_index(current_array, start, idx):
@@ -215,23 +236,7 @@ def demo():
     to_file('demo/demo.json')
 
 
-class ParentListNode(object):
-    name = ""
-    index = None
-
-    def __init__(self, name, index):
-        self.name = name
-        self.index = index
-
-
-def create_parent_list_node(name, index):
-    pln = ParentListNode(name, index)
-    return pln
-
-
-
 parentList = []
-object_list_index = 0
 headDict = {}
 
 

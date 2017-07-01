@@ -10,6 +10,7 @@ QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly for
   * ` f ` for floating-point types
   * ` b ` for boolean types
   * ` [] ` for an array
+  * ` [{index}] ` for an object array
 * Nested data is indicated by tabbing-in from the parent on a new line. For example:
 ```
 name s = Brady Madden
@@ -47,6 +48,57 @@ address
      "grade": 12,
      "school": "University"
 }
+```
+ * Object arrays can hold multiple objects containing multiple key-value pairs. Objects inside object arrays can be referenced by index:
+```
+emergencyContacts[0]
+    name = John Doe
+    phoneNumber = 555-5432
+emergencyContacts[1]
+    name = Jane Doe
+    phoneNumber = 867-5309
+
+emergencyContacts[0]
+    relationship = father
+```
+    The object arrays will be combined by index and render:
+```
+"emergencyContacts": [
+     {
+          "name": "John Doe",
+          "phoneNumber": "555-5432",
+          "relationship": "father"
+     },
+     {
+          "name": "Jane Doe",
+          "phoneNumber": "867-5309"
+     },
+]
+```
+ * New objects inside object arrays can also be created by leaving the {index} blank:
+```
+emergencyContacts[0]
+    name = John Doe
+    phoneNumber = 555-5432
+emergencyContacts[]
+    name = Jane Doe
+    phoneNumber = 867-5309
+emergencyContacts[1]
+    relationship = mother
+```
+    Generates:
+```
+"emergencyContacts": [
+     {
+          "name": "John Doe",
+          "phoneNumber": "555-5432"
+     },
+     {
+          "name": "Jane Doe",
+          "phoneNumber": "867-5309",
+          "relationship": "mother"
+     }
+]
 ```
 
 ## Usage
