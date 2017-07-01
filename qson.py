@@ -26,6 +26,7 @@ def from_file(inf):
 
 
 def parse_line(l):
+    print(l)
     if handle_empty(l):
         return
     current_dict = headDict
@@ -34,11 +35,14 @@ def parse_line(l):
         if l[idx] != "":
             add_data(current_dict, idx, l)
         else:
-            if type(current_dict.get(parentList[idx])) is list:
-                current_dict = current_dict.get(parentList[idx][0])[parentList[idx][1]]
+            if type(current_dict.get(parentList[idx].name)) is list:
+                if parentList[idx].index is not None:
+                    print(parentList[idx].name)
+                    print(parentList[idx].index)
+                    current_dict = current_dict.get(parentList[idx].name)[parentList[idx].index]
             else:
-                current_dict = current_dict.get(parentList[idx])
-                handle_invalid(current_dict, parentList[idx])
+                current_dict = current_dict.get(parentList[idx].name)
+                handle_invalid(current_dict, parentList[idx].name)
         idx += 1
 
 
@@ -54,23 +58,31 @@ def handle_invalid(current_dict, last):
 
 def add_data(current_dict, idx, l):
     current_key = l[idx]
-    if is_array(current_key):
+    if is_simple_array(current_key):
         array_data_piece(current_dict, current_key, idx)
+    elif is_object_array(current_key):
+        current_key, index = object_array_data_piece(current_dict, current_key, idx)
+        append_parent_list(idx, current_key, index)
     else:
         if current_key.strip() not in current_dict:
             current_key = single_data_piece(current_dict, current_key.strip())
-        append_parent_list(idx, current_key)
+        append_parent_list(idx, current_key, None)
 
 
-def is_array(data):
+def is_simple_array(data):
     return re.match('.*\[\].*', data)
 
 
-def append_parent_list(idx, key_name):
+def is_object_array(data):
+    return re.match('.*\[[0-9]+\].*', data)
+
+
+def append_parent_list(idx, key_name, index):
+    pln = create_parent_list_node(key_name, index)
     if len(parentList) > idx:
-        parentList[idx] = key_name
+        parentList[idx] = pln
     else:
-        parentList.append(key_name)
+        parentList.append(pln)
 
 
 def single_data_piece(current_dict, data):
@@ -98,7 +110,7 @@ def array_data_piece(current_dict, data, idx):
         a_list = value.split(",")
         for item in a_list:
             add_simp_array(current_dict, new_key, data_type, item.strip())
-        append_parent_list(idx, new_key)
+        append_parent_list(idx, new_key, None)
     else:
         splt = re.match('^([^ \[\]]*) *\[[ ]*[0-9]*[ ]*\]', data)
         key = splt.group(1).strip()
@@ -111,6 +123,26 @@ def array_data_piece(current_dict, data, idx):
             current_dict[new_key] = [0]
             current_dict[new_key][0] = {}
         append_parent_list(idx, [new_key, index])
+
+
+def object_array_data_piece(current_dict, data, idx):
+    splt = re.match('^([^ \[\]]*) *\[[ ]*([0-9]+)[ ]*\]', data)
+    key = splt.group(1).strip()
+    index = int(splt.group(2).strip())
+    new_key = validate_key(key)
+    if new_key in current_dict:
+        if len(current_dict[new_key]) <= index:
+            add_object_array_index(current_dict[new_key], len(current_dict[new_key]), index)
+    else:
+        current_dict[new_key] = []
+        add_object_array_index(current_dict[new_key], 0, index)
+    return new_key, index
+
+
+def add_object_array_index(current_array, start, idx):
+    while start <= idx:
+        current_array.append({})
+        start += 1
 
 
 def add_key_val(cur_dict, k, data_type, val):
@@ -193,7 +225,23 @@ def demo():
     to_file('demo/demo.json')
 
 
+class ParentListNode(object):
+    name = ""
+    index = None
+
+    def __init__(self, name, index):
+        self.name = name
+        self.index = index
+
+
+def create_parent_list_node(name, index):
+    pln = ParentListNode(name, index)
+    return pln
+
+
+
 parentList = []
+object_list_index = 0
 headDict = {}
 
 
