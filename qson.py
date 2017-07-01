@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # __author__bradymadden97__
 
+import argparse
 import re
 import sys
 import json
 import warnings
 
-infile, outfile = "", ""
-demo_flag = False
-for each in sys.argv:
-    if each == "-d":
-        demo_flag = True
+parentList = []
+headDict = {}
 
-if len(sys.argv) != 3 and not demo_flag:
-    raise RuntimeError("Please enter input and output filenames, or -d for demo")
-elif not demo_flag:
-    infile = sys.argv[1]
-    outfile = sys.argv[2]
+
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--demo', help="Run demo")
+    parser.add_argument('-i', '--input', help="Input filename", default='')
+    parser.add_argument('-o', '--output', help="Output filename", default='')
+    parser.add_argument('-w', '--web', help="Running through web application", action='store_true')
+
+    return parser.parse_args(args)
 
 
 class ParentListNode(object):
@@ -226,21 +228,30 @@ def to_file(outf):
         json.dump(headDict, file, indent=5, sort_keys=True)
 
 
-def main():
-    from_file(infile)
-    to_file(outfile)
-
-
 def demo():
     from_file('demo/demo.txt')
     to_file('demo/demo.json')
 
 
-parentList = []
-headDict = {}
+def cli(infile, outfile):
+    from_file(infile)
+    to_file(outfile)
 
 
-if demo_flag:
-    demo()
-else:
-    main()
+def web(infile):
+    from_file(infile)
+    print(json.dumps(headDict))
+    sys.stdout.flush()
+
+
+def main():
+    args = parse_args(sys.argv[1:])
+    if args.demo:
+        demo()
+    elif args.web:
+        web(args.input)
+    elif args.input and args.output:
+        cli(args.input, args.output)
+    exit()
+
+main()

@@ -1,0 +1,22 @@
+{
+  "name": "qson",
+  "version": "1.0.0",
+  "description": "Quick JSON generation using a simple-syntax model",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradymadden97/qson.git"
+  },
+  "author": "Brady Madden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bradymadden97/qson/issues"
+  },
+  "homepage": "https://github.com/bradymadden97/qson#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
