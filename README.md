@@ -1,7 +1,7 @@
 # QSON
 QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly formulate complex data in a ubiquitous structure using simple syntax. Write your data quickly and translate it to JSON format.
 
-**Version 0.1** is a command-line python script that can read in a text file and return a pretty-printed JSON file.
+**Version 1.0** is a command-line python script that can read in a text file and return a pretty-printed JSON file.
 ## JSON Generator Syntax
 * Key-value pairs are designated with an equals sign ` = `
 * The following data types can be represented with the following character conventions:
@@ -61,8 +61,8 @@ emergencyContacts[1]
 emergencyContacts[0]
     relationship = father
 ```
-    The object arrays will be combined by index and render:
-```
+The object arrays will be combined by index and render:
+ ```
 "emergencyContacts": [
      {
           "name": "John Doe",
@@ -86,8 +86,8 @@ emergencyContacts[]
 emergencyContacts[1]
     relationship = mother
 ```
-    Generates:
-```
+ Generates:
+ ```
 "emergencyContacts": [
      {
           "name": "John Doe",
@@ -102,7 +102,7 @@ emergencyContacts[1]
 ```
 
 ## Usage
-**QSON** v0.1 is a Python 3 script.
+**QSON** v1.0 is a Python 3 script.
 1. Get [python](https://www.python.org/downloads/)
 2. Clone this repository to your machine
 3. Run **QSON** with the proper arguments:
