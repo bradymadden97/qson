@@ -12,16 +12,25 @@
                "john@email.com",
                "doe@google.com"
           ],
-          "emergencyContacts[0]": {
-               "name": "Bob Smith",
-               "phone": "202-345-6789",
-               "relationship": "cousin"
-          },
-          "emergencyContacts[1]": {
-               "email": "jane.doe@email.com",
-               "name": "Jane Doe",
-               "relationship": "mother"
-          },
+          "emergencyContacts": [
+               {
+                    "name": "Bob Smith",
+                    "phone": "202-345-6789",
+                    "relationship": "cousin"
+               },
+               {
+                    "email": "jane.doe@email.com",
+                    "name": "Jane Doe",
+                    "relationship": "mother"
+               },
+               {
+                    "address": {
+                         "number": 987,
+                         "street": "Sesame St."
+                    },
+                    "name": "Jim Doe"
+               }
+          ],
           "id": 12345,
           "name": "John Doe"
      },
@@ -29,7 +38,7 @@
           "description": "The simple-syntax JSON generator",
           "name": "QSON"
      },
-     "releaseDate": "2017-06-06",
+     "releaseDate": "2017-07-01",
      "repository": "https://github.com/bradymadden97/qson",
-     "version": 0.1
+     "version": 1.0
 }

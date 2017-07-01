@@ -2,8 +2,8 @@ product
 	name = QSON
 	description = The simple-syntax JSON generator
 repository = https://github.com/bradymadden97/qson
-version f = 0.1
-releaseDate = 2017-06-06
+version f = 1.0
+releaseDate = 2017-07-01
 demo b = true
 person
 	id i = 12345
@@ -19,6 +19,11 @@ person
 		name s = Jane Doe
 		email s = jane.doe@email.com
 		relationship = mother
+	emergencyContacts[]
+		name s = Jim Doe
+		address
+			number i = 987
+			street s = Sesame St.
 company = Google
 latitude = 37.3861 N
 longitude = 122.0839 W
