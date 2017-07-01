@@ -127,6 +127,8 @@ def add_key_val(cur_dict, k, data_type, val):
             cur_dict[key] = float(val)
         except ValueError:
             cur_dict[key] = val
+    elif data_type == 's':
+        cur_dict[key] = val
     else:
         invalid_data_type(key, data_type)
         cur_dict[key] = val
@@ -159,6 +161,8 @@ def add_simp_array(cur_dict, key, data_type, val):
             cur_dict[key].append(float(val))
         except ValueError:
             cur_dict[key].append(val)
+    elif data_type == 's':
+        cur_dict[key].append(val)
     else:
         invalid_data_type(key, data_type)
         cur_dict[key].append(val)
