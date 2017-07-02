@@ -1,3 +1,25 @@
+$(document).ready(function(){
+    $("#text-input").focus();
+});
+
+$("#submit-input").on('click', function(){
+    var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if(this.readyState == 4 && this.status == 200){
+			updateOutput(this.responseText);
+		}
+	};
+	xhr.open("GET", "http://localhost:8000/parse", true);
+	xhr.send();
+});
+
+function updateOutput(data) {
+    $("#text-output").focus();
+    document.getElementById("text-output").value = JSON.stringify(JSON.parse(data), undefined, 4);
+    $('#text-output').trigger('autoresize');
+};
+
+
 $(document).delegate('#text-input', 'keydown', function(e) {
   var keyCode = e.keyCode || e.which;
 

@@ -22,4 +22,15 @@ textarea.materialize-textarea:focus:not([readonly])+label{
 
 #input-panel{
     padding-top:10px;
+    padding-bottom:15px;
+}
+#output-panel{
+    padding-top:10px;
+    padding-bottom:15px;
+}
+#submit-input{
+    background-color: #64b5f6;
+}
+#download-output{
+    background-color: #546e7a;
 }

@@ -35,7 +35,7 @@ function index(req, res){
 function parse(req, res){
     var process =  spawn('python', ["qson.py", "-i", "test/test.txt", "-w"]);
     process.stdout.on('data', function (data) {
-        res.send(JSON.parse(data));
+        res.send(data);
     });
 };
 
@@ -43,7 +43,7 @@ function parse(req, res){
 app.get("/", function(req, res){
     index(req, res);
 });
-app.post("/parse", function(req, res){
+app.get("/parse", function(req, res){
 	parse(req, res);
 });
 
