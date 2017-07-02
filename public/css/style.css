@@ -1,0 +1,25 @@
+html {
+    font-family: Verdana,Geneva,sans-serif;
+}
+
+nav {
+    margin-bottom: 5px;
+}
+
+textarea.materialize-textarea {
+    min-height: 350px;
+}
+textarea.materialize-textarea:focus:not([readonly]){
+    border-bottom: 0.5px solid #80d8ff;
+    box-shadow: 0 1px 0 0 #80d8ff;
+}
+textarea.materialize-textarea:focus:not([readonly])+label{
+    color: #616161;
+}
+.input-field label {
+    color: #616161;
+}
+
+#input-panel{
+    padding-top:10px;
+}
