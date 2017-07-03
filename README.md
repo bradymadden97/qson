@@ -113,7 +113,7 @@ emergencyContacts[1]
 1. Get [python](https://www.python.org/downloads/) and [node](https://nodejs.org/en/download/)
 2. Clone this repository to your machine
 3. Run `npm install`
-4. Lauch QSON webapp on `localhost:8000` with ` $ node app.js `
+4. Lauch **QSON** webapp on `localhost:8000` with ` $ node app.js `
 
 ## Demo
 To run a demo of QSON and discover the capabilities, execute with the ` -d ` flag: `` $ python qson.py -d `` .
