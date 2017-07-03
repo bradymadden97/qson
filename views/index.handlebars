@@ -9,26 +9,10 @@
 
 <div class="row">
     <div class="col s12 m5 offset-m1">
-        <div id="input-panel" class="card-panel blue-grey lighten-5 z-depth-4">
-            <div class="input-field">
-                <textarea id="text-input" class="materialize-textarea"></textarea>
-                <label for="text-input"><b>QSON Input:</b></label>
-            </div>
-            <div style="text-align:right">
-                <button id="submit-input" class="btn waves-effect waves-light" type="submit" name="action">Generate &raquo</button>
-            </div>
-        </div>
+        {{> inputBox}}
     </div>
     <div class="col s12 m5">
-        <div id="output-panel" class="card-panel blue-grey lighten-5 z-depth-4">
-            <div class="input-field">
-                <textarea id="text-output" class="materialize-textarea"></textarea>
-                <label for="text-output"><b>JSON Output:</b></label>
-            </div>
-            <div>
-                <button id="download-output" class="btn waves-effect waves-light" type="submit" name="action">Download</button>
-            </div>
-        </div>
+        {{> outputBox}}
     </div>
 </div>
 

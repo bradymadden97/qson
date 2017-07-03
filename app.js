@@ -3,6 +3,7 @@ const express = require('express');
 const exphb = 	require('express-handlebars');
 const path = require('path');
 const spawn = require("child_process").spawn;
+const bodyParser = require('body-parser');
 const app = express();
 
 //Handlebars
@@ -20,9 +21,11 @@ var hbs = exphb.create({
 
 //Setup
 app.use(express.static(__dirname + '/public'));
-app.use('/css', express.static(__dirname + '/node_modules/materialize-css/dist/css'))
-app.use('/js', express.static(__dirname + '/node_modules/materialize-css/dist/js'))
-app.use('/js', express.static(__dirname + '/node_modules/materialize-css/node_modules/jquery/dist'))
+app.use('/css', express.static(__dirname + '/node_modules/materialize-css/dist/css'));
+app.use('/js', express.static(__dirname + '/node_modules/materialize-css/dist/js'));
+app.use('/js', express.static(__dirname + '/node_modules/materialize-css/node_modules/jquery/dist'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
@@ -33,17 +36,19 @@ function index(req, res){
     });
 };
 function parse(req, res){
-    var process =  spawn('python', ["qson.py", "-i", "test/test.txt", "-w"]);
+    var process =  spawn('python', ["qson.py", "-w"]);
     process.stdout.on('data', function (data) {
         res.send(data);
     });
+    process.stdin.write(JSON.stringify(req.body.data));
+	process.stdin.end();
 };
 
 //Routes
 app.get("/", function(req, res){
     index(req, res);
 });
-app.get("/parse", function(req, res){
+app.post("/parse", function(req, res){
 	parse(req, res);
 });
 

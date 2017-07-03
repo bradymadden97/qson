@@ -4,13 +4,17 @@ $(document).ready(function(){
 
 $("#submit-input").on('click', function(){
     var xhr = new XMLHttpRequest();
+    var params = {
+        data: $("#text-input").val()
+    };
 	xhr.onreadystatechange = function () {
 		if(this.readyState == 4 && this.status == 200){
 			updateOutput(this.responseText);
 		}
 	};
-	xhr.open("GET", "http://localhost:8000/parse", true);
-	xhr.send();
+	xhr.open("POST", "http://localhost:8000/parse", true);
+	xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+	xhr.send(JSON.stringify(params));
 });
 
 function updateOutput(data) {
@@ -27,13 +31,10 @@ $(document).delegate('#text-input', 'keydown', function(e) {
     e.preventDefault();
     var start = $(this).get(0).selectionStart;
     var end = $(this).get(0).selectionEnd;
-
-    // set textarea value to: text before caret + tab + text after caret
     $(this).val($(this).val().substring(0, start)
                 + "\t"
                 + $(this).val().substring(end));
 
-    // put caret at right position again
     $(this).get(0).selectionStart =
     $(this).get(0).selectionEnd = start + 1;
   }

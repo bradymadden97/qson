@@ -41,6 +41,12 @@ def from_file(inf):
             parse_line(line.rstrip('\n').rstrip().replace("    ", "\t").split("\t"))
 
 
+def from_blob():
+    lines = json.loads(sys.stdin.readlines()[0]).split("\n")
+    for line in lines:
+        parse_line(line.rstrip('\n').rstrip().replace("    ", "\t").split("\t"))
+
+
 def parse_line(l):
     if handle_empty(l):
         return
@@ -238,8 +244,8 @@ def cli(infile, outfile):
     to_file(outfile)
 
 
-def web(infile):
-    from_file(infile)
+def web():
+    from_blob()
     print(json.dumps(headDict))
     sys.stdout.flush()
 
@@ -249,7 +255,7 @@ def main():
     if args.demo:
         demo()
     elif args.web:
-        web(args.input)
+        web()
     elif args.input and args.output:
         cli(args.input, args.output)
     exit()
