@@ -37,7 +37,7 @@ function index(req, res){
     });
 };
 function parse(req, res){
-    var process =  spawn('python', ["qson.py", "-w"]);
+    var process =  spawn('python', ["qson/qson.py", "-w"]);
     process.stdout.on('data', function (data) {
         res.send(data);
     });
