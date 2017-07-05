@@ -118,7 +118,7 @@ emergencyContacts[1]
 ## Demo
 To run a demo of QSON and discover the capabilities, execute with the ` -d ` flag: `` $ python qson.py -d `` .
 
-View the input and output in the `` demo `` subdirectory.
+View the input and output in the [demo](qson/demo) subdirectory.
 
 
 
