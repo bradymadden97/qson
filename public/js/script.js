@@ -12,7 +12,7 @@ $("#submit-input").on('click', function(){
 			updateOutput(this.responseText);
 		}
 	};
-	xhr.open("POST", "http://localhost:8000/parse", true);
+	xhr.open("POST", "/parse", true);
 	xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
 	xhr.send(JSON.stringify(params));
 });
