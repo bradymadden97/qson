@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+var port = process.env.PORT || 8000;
 
 //Route functions
 function index(req, res){
@@ -74,4 +75,6 @@ app.get("/download", function(req, res){
 });
 
 
-app.listen(8000);
+app.listen(port, function(){
+	console.log("Running on port " + port);
+});
