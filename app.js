@@ -25,6 +25,7 @@ app.use(express.static(__dirname + '/public'));
 app.use('/css', express.static(__dirname + '/node_modules/materialize-css/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/materialize-css/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/materialize-css/node_modules/jquery/dist'));
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('handlebars', hbs.engine);
