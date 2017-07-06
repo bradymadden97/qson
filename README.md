@@ -1,7 +1,7 @@
 # QSON
 QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly formulate complex data in a ubiquitous structure using simple syntax. Write your data quickly and translate it to JSON format.
 
-**Version 2.0** includes both a command-line python script that can read in a text file and return a pretty-printed JSON file, and a node webapp that can read in qson input and display pretty-printed JSON.
+**Version 2.1** includes both a command-line python script that can read in a text file and return a pretty-printed JSON file, and a RESTful webapp that can read in qson input and display pretty-printed JSON.
 
 ## JSON Generator Syntax
 * Key-value pairs are designated with an equals sign ` = `
@@ -103,17 +103,20 @@ emergencyContacts[1]
 ```
 
 ## Usage
-**QSON** v2.0 is both a Python CLI and a Node webapp.
+**QSON** v2.0 is both a Python CLI and a RESTful webapp.
 ### Python CLI
 1. Get [python](https://www.python.org/downloads/)
 2. Clone this repository to your machine
 3. Run **QSON** with the proper arguments:
 `` $ python qson.py -i <inputfile.txt>  -o <outputfile.json> ``
-### Node webapp
+### Webapp
+1. View and edit **QSON** on the interactive [website](https://qson.herokuapp.com)
+2. Edit and download JSON files with one click
+
+## Develop
 1. Get [python](https://www.python.org/downloads/) and [node](https://nodejs.org/en/download/)
 2. Clone this repository to your machine
 3. Run `npm install`
-4. Lauch **QSON** webapp on `localhost:8000` with ` $ node app.js `
 
 ## Demo
 To run a demo of QSON and discover the capabilities, execute with the ` -d ` flag: `` $ python qson.py -d `` .
