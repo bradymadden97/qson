@@ -1,7 +1,7 @@
 # QSON
 QSON (for Quick JSON) is a JSON-generation tool that allows users to quickly formulate complex data in a ubiquitous structure using simple syntax. Write your data quickly and translate it to JSON format.
 
-**Version 2.1** includes both a command-line python script that can read in a text file and return a pretty-printed JSON file, and a RESTful webapp that can read in qson input and display pretty-printed JSON.
+**Version 2.0** includes both a command-line python script that can read in a text file and return a pretty-printed JSON file, and a RESTful webapp that can read in qson input and display pretty-printed JSON.
 
 ## JSON Generator Syntax
 * Key-value pairs are designated with an equals sign ` = `
